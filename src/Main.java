@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         FindThePrize game = FindThePrize.init(5 , 1, 10);
         List<Integer> guesses = new ArrayList<>(Arrays.asList(1,2,3,4,5,1,2,3,4,5));

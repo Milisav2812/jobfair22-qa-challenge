@@ -1,7 +1,11 @@
 package logic;
 
+import customexceptions.ArgumentLessOrEqualToZeroException;
+import customexceptions.IllegalGuessIndexException;
+import customexceptions.IllegalNumberOfGuessesException;
+import customexceptions.IllegalNumberOfPrizesException;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class FindThePrize {
     private final int numberOfPrizes;
@@ -25,28 +29,25 @@ public class FindThePrize {
 
     //Function for initializing new game.
     // Game is configurable, so it can contain multiple options for player to guess, but also multiple prizes
-    public static FindThePrize init(int numberOfOptions, int numberOfPrizes, int numberOfRounds) {
+    public static FindThePrize init(int numberOfOptions, int numberOfPrizes, int numberOfRounds) throws Exception {
 
         if(numberOfOptions <= 0 || numberOfPrizes <= 0 || numberOfRounds <= 0){
-            System.out.println("ERROR: Input parameters cannot be less or equal to 0");
-            System.exit(0);
+            throw new ArgumentLessOrEqualToZeroException("Input parameters cannot be less or equal to 0");
         }
 
         /* Verify that numberOfPrizes is less than numberOfOptions */
         if(numberOfPrizes >= numberOfOptions){
-            System.out.println("ERROR: numberOfPrizes cannot be greater than or equal to numberOfOptions");
-            System.exit(0);
+            throw new IllegalNumberOfPrizesException("numberOfPrizes cannot be greater than or equal to numberOfOptions");
         }
 
         return new FindThePrize(numberOfOptions, numberOfPrizes, numberOfRounds);
     }
 
     //Game core loop. This function gets guesses for every round in game
-    public int playGame(List<Integer> roundGuesses) {
+    public int playGame(List<Integer> roundGuesses) throws Exception {
 
         if(roundGuesses.size() != numberOfRounds){
-            System.out.println("ERROR: The number of guesses has to be the same as the number of rounds!");
-            System.exit(0);
+            throw new IllegalNumberOfGuessesException("The number of guesses has to be the same as the number of rounds!");
         }
 
         /* Bug: for loop should go from 0 to numberOfRounds-1 */
@@ -65,7 +66,7 @@ public class FindThePrize {
     }
 
     //playing one round and adding points if needed
-    public boolean playRound(int roundGuess) {
+    public boolean playRound(int roundGuess) throws Exception{
         this.newRound();
         boolean currentRoundGuess = this.guess(roundGuess);
 
@@ -80,12 +81,12 @@ public class FindThePrize {
     //Initializing new round and setting prizes on random positions
     public void newRound() {
         // Get List of non repeating numbers between 0 and numberOfOptions-1
-        List<Integer> prizeLocations = generatePrizeLocations(this.gameSequence.size());
+        List<Integer> prizePositions = generatePrizePositions(this.gameSequence.size());
 
         /* Bug: For has to go from 0 to numberOfPrizes - 1 */
         // Pick first (numberOfPrizes) elements and make them false in gameSequence
         for (int i = 0; i < numberOfPrizes; i++) {
-            this.gameSequence.set(prizeLocations.get(i), true);
+            this.gameSequence.set(prizePositions.get(i), true);
         }
     }
 
@@ -94,16 +95,15 @@ public class FindThePrize {
         this.numberOfPoints++;
     }
 
-    public boolean guess(int index) {
+    public boolean guess(int index) throws Exception{
         if(index > gameSequence.size() || index < 0){
-            System.out.println("ERROR: Guess index must be between 1 and numberOfOptions!");
-            System.exit(0);
+            throw new IllegalGuessIndexException("Guess index must be between 1 and numberOfOptions!");
         }
         return this.gameSequence.get(index-1);
     }
 
     // Creates List of Integers (0...numberOfOptions) and returns it shuffled
-    private List<Integer> generatePrizeLocations(int numberOfOptions){
+    public List<Integer> generatePrizePositions(int numberOfOptions){
 
         // Create list that contains numbers 0...size
         ArrayList<Integer> prizeLocations = new ArrayList<>();
@@ -119,5 +119,9 @@ public class FindThePrize {
     // GETTERS & SETTERS
     public int getNumberOfPoints() {
         return numberOfPoints;
+    }
+
+    public List<Boolean> getGameSequence() {
+        return gameSequence;
     }
 }

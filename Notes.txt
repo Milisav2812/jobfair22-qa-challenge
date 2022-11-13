@@ -7,8 +7,21 @@ Changes:
 - Check that number of guesses is the same as numberOfRounds
 - Check that guess index is between 1 and numberOfOptions
 
+- Created positive test scenarios
+- Implemented custom exceptions and integrated them into negative test scenarios
+
 Found Bugs:
 - Bug: gameSequence was initialized with 1 less element (Constructor)
 - Bug: for loop should go from 0 to numberOfRounds-1 (PlayGame)
 - Bug: For has to go from 0 to numberOfPrizes - 1 (NewRound)
 - Bug: possibility of generating same number twice (NewRound)
+
+- In the testPointIncrease, the number of Prizes was set to be greater than the number of options
+    -> This would cause the test to fail
+-
+
+Custom Exceptions:
+- ArgumentLessOrEqualToZeroException - When one of the number arguments is less or equal to zero
+- IllegalNumberOfPrizesException - When the number of prizes is greater than number of options
+- IllegalNumberOfGuessesException - When the number of guesses differs from number of rounds
+- IllegalGuessIndexException - When the guess index is greater than number of options or less than zero
