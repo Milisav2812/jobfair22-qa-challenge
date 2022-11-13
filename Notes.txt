@@ -1,0 +1,14 @@
+Changes:
+- Correct guess is now a boolean of TRUE, instead of FALSE
+- Limit the number of prizes so that numberOfPrizes is always lower than numberOfOptions
+- Created function generatePrizeLocations() that will return prize locations(with no duplicates)
+- gameSequence now initialized with Collections.fill()
+- Limit all input numbers to be greater than 0
+- Check that number of guesses is the same as numberOfRounds
+- Check that guess index is between 1 and numberOfOptions
+
+Found Bugs:
+- Bug: gameSequence was initialized with 1 less element (Constructor)
+- Bug: for loop should go from 0 to numberOfRounds-1 (PlayGame)
+- Bug: For has to go from 0 to numberOfPrizes - 1 (NewRound)
+- Bug: possibility of generating same number twice (NewRound)
