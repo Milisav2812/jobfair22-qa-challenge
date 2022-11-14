@@ -35,28 +35,28 @@ public class TestFindThePrizeNegative {
     @Test
     public void initWithNegativeNumberOfOptions(){
         assertThrows(ArgumentLessOrEqualToZeroException.class, () -> {
-            FindThePrize game = FindThePrize.init(-1 , 1, 2);
+            FindThePrize.init(-1 , 1, 2);
         });
     }
 
     @Test
     public void initWithNegativeNumberOfPrizes(){
         assertThrows(ArgumentLessOrEqualToZeroException.class, () -> {
-            FindThePrize game = FindThePrize.init(1 , -1, 2);
+            FindThePrize.init(1 , -1, 2);
         });
     }
 
     @Test
     public void initWithNegativeNumberOfRounds(){
         assertThrows(ArgumentLessOrEqualToZeroException.class, () -> {
-            FindThePrize game = FindThePrize.init(1 , 1, -1);
+            FindThePrize.init(1 , 1, -1);
         });
     }
 
     @Test
     public void initWithNumberOfPrizesGreaterThanNumberOfOptions(){
         assertThrows(IllegalNumberOfPrizesException.class, () -> {
-            FindThePrize game = FindThePrize.init(1 , 4, 1);
+            FindThePrize.init(1 , 4, 1);
         });
     }
 

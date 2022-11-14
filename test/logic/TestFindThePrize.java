@@ -25,7 +25,7 @@ public class TestFindThePrize {
         // Create new game
         FindThePrize game = FindThePrize.init(numberOfOptions , numberOfPrizes, 1);
 
-        // Set prizes to gameSequence
+        // Set prize positions in gameSequence
         game.newRound();
 
         // Count number of true positions in gameSequence
@@ -43,16 +43,25 @@ public class TestFindThePrize {
     // guess
     @Test
     public void testGuess() throws Exception{
-        // Create new game
-        FindThePrize game = FindThePrize.init(5 , 4, 1);
+        // Create new game with only one prize
+        FindThePrize game = FindThePrize.init( 5 , 1, 1);
 
-        // Set prizes to gameSequence
+        // Set prize positions in gameSequence
         game.newRound();
 
+        // Find prize index
+        List<Boolean> gameSequence = game.getGameSequence();
+        int prizeIndex = 0;
+        for(int i=0; i<gameSequence.size(); i++){
+            if(gameSequence.get(i)){
+                prizeIndex = i + 1;
+                break;
+            }
+        }
+
         // Call guess() and verify response
-        int guessIndex = 2;
-        boolean guessResponse = game.guess(guessIndex);
-        assertEquals(game.getGameSequence().get(guessIndex-1), guessResponse);
+        boolean guessResponse = game.guess(prizeIndex);
+        assertEquals(game.getGameSequence().get(prizeIndex-1), guessResponse);
     }
 
     // generatePrizePositions
@@ -64,34 +73,84 @@ public class TestFindThePrize {
         FindThePrize game = FindThePrize.init(numberOfOptions , 4, 1);
 
         // Generate prize positions
-        List<Integer> numbers = game.generatePrizePositions(numberOfOptions);
+        List<Integer> positions = game.generatePrizePositions(numberOfOptions);
 
         // Verify that there are no duplicate values in the positions List
         Set<Integer> tempSet = new HashSet<>();
         for(int i=0; i<numberOfOptions; i++){
-            if(tempSet.contains(numbers.get(i))){
+            if(tempSet.contains(positions.get(i))){
                 fail();
             }
-            tempSet.add(numbers.get(i));
+            tempSet.add(positions.get(i));
         }
     }
 
     // playRound
     @Test
-    public void testPlayRound() throws Exception{
+    public void testPlayRoundIncreasePointsOnCorrectGuess() throws Exception{
         int guessIndex = 1;
-        List<Boolean> gameSequence;
 
         // Create new game
-        FindThePrize game = FindThePrize.init(4 , 2, 1);
+        FindThePrize game = FindThePrize.init(1 , 1, 1);
 
-        // Call playRound and get gameSequence element for guessIndex
+        // Instantiate new round
+        game.newRound();
+
+        // Call playRound
         boolean playRoundResponse = game.playRound(guessIndex);
-        gameSequence = game.getGameSequence();
 
-        // Assert playRound Response
-        assertEquals(gameSequence.get(guessIndex-1), playRoundResponse);
+        // Verify that playRoundResponse is true (Correct guess)
+        assertEquals(true, playRoundResponse);
 
+        // Verify that the number of points has been increased to 1
+        assertEquals(1, game.getNumberOfPoints());
+    }
+
+    @Test
+    public void testPlayRoundIncorrectGuess() throws Exception{
+        int guessIndex = 1;
+
+        // Create new game
+        FindThePrize game = FindThePrize.init(1 , 1, 1);
+
+        // Call playRound - Incorrect guess
+        boolean playRoundResponse = game.playRound(guessIndex);
+
+        // Verify that playRoundResponse is true (Correct guess)
+        assertEquals(false, playRoundResponse);
+
+        // Verify that the number of points is 0
+        assertEquals(0, game.getNumberOfPoints());
+    }
+
+    // playGame
+    @Test
+    public void testPlayGameWhenPlayerWins() throws Exception{
+
+        // Create new game
+        FindThePrize game = FindThePrize.init(1 , 1, 1);
+
+        // Call playGame
+        int playGameResponse = game.playGame(Collections.singletonList(1));
+
+        // Verify that the number of points is 1
+        assertEquals(1, playGameResponse);
+    }
+
+    @Test
+    public void testPlayGameWhenPlayerLoses() throws Exception{
+
+        // Call playGame unitl player looses
+        int playGameResponse;
+        do {
+            // Create new game
+            FindThePrize game = FindThePrize.init(100 , 1, 1);
+
+            playGameResponse = game.playGame(Collections.singletonList(1));
+        }while(playGameResponse != 0);
+
+        // Verify that the number of points is 0
+        assertEquals(0, playGameResponse);
     }
 
 
