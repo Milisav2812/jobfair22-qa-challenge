@@ -110,7 +110,7 @@ public class TestFindThePrize {
     public void testPlayRoundIncorrectGuess() throws Exception{
         int guessIndex = 1;
 
-        // Create new game
+        // Create new game, but do not instantiate new round
         FindThePrize game = FindThePrize.init(1 , 1, 1);
 
         // Call playRound - Incorrect guess
@@ -152,7 +152,7 @@ public class TestFindThePrize {
             playGameResponse = game.playGame(Arrays.asList(1,2,3,4,5));
         }while(playGameResponse == numberOfRounds);
 
-        // Verify that the number of points is 0
+        // Assert number of points
         assertEquals(game.getNumberOfPoints(), playGameResponse);
     }
 
