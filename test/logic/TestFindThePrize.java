@@ -140,17 +140,20 @@ public class TestFindThePrize {
     @Test
     public void testPlayGameWhenPlayerLoses() throws Exception{
 
-        // Call playGame unitl player looses
+        int numberOfRounds = 5;
+
+        // Call playGame until player loses
+        FindThePrize game;
         int playGameResponse;
         do {
             // Create new game
-            FindThePrize game = FindThePrize.init(100 , 1, 1);
+            game = FindThePrize.init(5 , 1, numberOfRounds);
 
-            playGameResponse = game.playGame(Collections.singletonList(1));
-        }while(playGameResponse != 0);
+            playGameResponse = game.playGame(Arrays.asList(1,2,3,4,5));
+        }while(playGameResponse == numberOfRounds);
 
         // Verify that the number of points is 0
-        assertEquals(0, playGameResponse);
+        assertEquals(game.getNumberOfPoints(), playGameResponse);
     }
 
 

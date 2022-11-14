@@ -64,12 +64,12 @@ public class FindThePrize {
             boolean isRoundWon = this.playRound(roundGuess);
 
             if(!isRoundWon) {
-                System.out.println("Incorrect guess! You LOSE!");
-                return 0;
+                System.out.println("Incorrect guess! You're out of the game!");
+                return this.numberOfPoints;
             }
         }
 
-        System.out.println("Congratulations! You WIN!");
+        System.out.println("Congratulations!");
         return this.numberOfPoints;
     }
 

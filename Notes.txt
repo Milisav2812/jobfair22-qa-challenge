@@ -17,6 +17,7 @@ Found Bugs:
 - Bug: possibility of generating same number twice (NewRound)
 - Bug: In the testPointIncrease, the number of Prizes was set to be greater than the number of options
     -> This would cause the test to fail
+- Bug: If a player loses a round, the number of gained points is always 0 (playGame lose scenario)
 
 Custom Exceptions:
 - ArgumentLessOrEqualToZeroException - When one of the number arguments is less or equal to zero
@@ -27,6 +28,11 @@ Custom Exceptions:
 Assumptions:
 - numberOfPrizes must be between 1 and numberOfOptions(including numberOfOptions)
 - list of guesses passed into playGame must be the same size as the numberOfRounds
+- If a player loses a round, he loses the game, but keeps all of his earned points
+    -> This would require further clarification. There are a couple of ways this logic can play out
+    1. Player is out of the game, but keeps all of his earned points
+    2. Player simply gains 0 points for that round, but continues the game
+    3. Player loses the game and all points he has gained so far
 
 If this were production level code and the task was given to me, some sort of clarification for these assumptions would have been made.
 In this example I made assumptions based on guessing games I have seen in the past.
